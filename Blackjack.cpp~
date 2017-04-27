@@ -118,7 +118,6 @@ void mainGameLoop(Player player){
 		
 		myCards.clear();
 		dealer.clear();
-		handIsOver = false;
 	}
 }
 
