@@ -6,8 +6,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <functional>
 
-void clearScreen(){
+void clearScreen() {
 
 	// USED FOR CLEARING THE CONSOLE
 	std::cout << "\033[2J\033[1;1H";
@@ -15,22 +17,22 @@ void clearScreen(){
 
 }
 
-int convertRank(int rank){
+int convertRank(int rank) {
 
-	if (rank == 0){
+	if (rank <= 0) {
 		return 11;
 	}
 	
-	else if (rank > 0 && rank < 9) {
+	else if (rank < 9) {
 		return ++rank;	
 	}
 	
-	else if (rank >= 9){
+	else {
 		return 10;	
 	}
 }
 
-void mainGameLoop(Player player){
+void mainGameLoop(Player player) {
 	
 	// INITIALIZES CARDS
 	CardDeck deck;
@@ -46,18 +48,22 @@ void mainGameLoop(Player player){
 	std::string input;	
 	int bet;	
 	
-	while (player.getBankroll() > 0){
+	while (player.getBankroll() > 0) {
 		clearScreen();
 		printFrameWithText("Place your bets. ($" + 
 			std::to_string(player.getBankroll()) +  + " remaining)", 1);
 	
-		input = getUserInput("          => $");
-		bet = verifyNumber(input);
-	
+		std::string betInput = "          => $";
+		do {
+			input = getUserInput(betInput);
+			bet = verifyNumber(input);
+			betInput = "          You do not have sufficient funds.\n          => $";
+		} while (bet > player.getBankroll());
+		
 		player.setBankroll(player.getBankroll() - bet);
 	
 		// DRAWS CARDS FROM THE DECK TO DEAL
-		for (int i = 0; i < 2; i++){
+		for (int i = 0; i < 2; i++) {
 			dealer.push_back(deck.getCard());
 			myCards.push_back(deck.getCard());
 		}
@@ -67,7 +73,7 @@ void mainGameLoop(Player player){
 		bool playerHasAce;
 		bool dealerHasAce;
 
-		while (!handIsOver){
+		while (!handIsOver) {
 			clearScreen();
 			printFrameWithText("You bet: $" + std::to_string(bet) + " ($" + 
 				std::to_string(player.getBankroll()) +  + " remaining)", 1);
@@ -75,7 +81,7 @@ void mainGameLoop(Player player){
 			// PRINTS DEALERS CARDS
 			printFrameWithTextLeft("Dealers hand:", 0);
 		
-			for (int i = 0; i < dealer.size(); i++){
+			for (int i = 0; i < dealer.size(); i++) {
 				Card temp = dealer[i];
 				dealersCardGraphics.push_back(createCardGraphic(temp, !(i%2 == 0)));
 			}
@@ -85,7 +91,7 @@ void mainGameLoop(Player player){
 			// PRINTS PLAYERS CARDS
 			printFrameWithTextLeft("Your hand:", 1);
 
-			for (int i = 0; i < myCards.size(); i++){
+			for (int i = 0; i < myCards.size(); i++) {
 				Card temp = myCards[i];
 				myCardGraphics.push_back(createCardGraphic(temp, true));
 			
@@ -95,22 +101,38 @@ void mainGameLoop(Player player){
 
 			printCards(myCardGraphics);
 		
-			if (playerCount < 22){
+			if (playerCount < 21){
 				printFrameWithText("Would you like to Hit (H), Double (D), or Stay (S)?", 1);
 				std::string choice = getUserInput();
+				
+				//Make input lowercase
+				std::transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
 		
 				// CLEARS VECTORS TO PREP FOR HIt		
-				if (choice == "H" || choice == "h"){
-					myCards.push_back(deck.getCard());
+				if(choice == "h") {
+						myCards.push_back(deck.getCard());
+				} else if(choice == "d") {
+					//Check if player has sufficient funds
+					if(player.getBankroll() >= bet) {
+						player.setBankroll(player.getBankroll() - bet);
+						bet *= 2;
+					} else {
+						printFrameWithText("You do not have sufficient funds.", 1);
+					}
+				
+				} else if(choice == "s") {
+					//Done dealing
 				}
-			}
-		
-			else {
+				
+			} else if (playerCount == 21) {
+				//Player Wins
+			} else {
 				printBusted();
 				handIsOver = true;
 				printFrameWithText("To play another hand press <ENTER>.", 1);
 				getUserInput();
 			}
+			
 			myCardGraphics.clear();
 			dealersCardGraphics.clear();
 			playerCount = 0;
@@ -120,9 +142,12 @@ void mainGameLoop(Player player){
 		dealer.clear();
 		handIsOver = false;
 	}
+	
+	printFrameWithText("You ran out of money, thanks for playing!", 1);
+	
 }
 
-void startNewGame(){
+void startNewGame() {
 	
 	// Player variables
 	std::string input;
@@ -145,7 +170,7 @@ void startNewGame(){
 	mainGameLoop(player);
 }
 
-int main(){
+int main() {
 	
 	// USED FOR CLEARING THE CONSOLE
 	std::cout << "\033[2J\033[1;1H";	
@@ -160,7 +185,7 @@ int main(){
 	input = getUserInput();
 	menuChoice = verifyNumber(input);
 
-	switch (menuChoice){
+	switch (menuChoice) {
 		// NEW GAME			
 		case 1: 
 			startNewGame();
@@ -182,45 +207,6 @@ int main(){
 		case 5:
 			break;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 	std::vector<std::vector<std::string>> dealer;

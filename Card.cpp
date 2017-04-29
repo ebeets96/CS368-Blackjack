@@ -5,15 +5,15 @@ Card::Card(int suit, int rank): suit(suit), rank(rank) {
 
 }
 
-int Card::getSuit() {
+const int Card::getSuit() const {
 	return suit;
 }
 
-int Card::getRank() {
+const int Card::getRank() const {
 	return rank;
 }
 
-std::string Card::getSuitString() {
+const std::string Card::getSuitString() const {
 	std::string suits[4];
 	suits[SPADE] = "Spade";
 	suits[CLUB] = "Club";
@@ -22,7 +22,7 @@ std::string Card::getSuitString() {
 	return suits[suit];
 }
 
-std::string Card::getRankString() {
+const std::string Card::getRankString() const {
 	std::string ranks[] = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
 			"Eight", "Nine", "Ten", "Jack", "Queen", "King"};
 	return ranks[rank - 1];

@@ -32,9 +32,9 @@ class Card {
 		
 		// Public Functions
 		Card(int suit, int rank);
-		int getSuit();
-		int getRank();
-		std::string getSuitString();
-		std::string getRankString();
+		const int getSuit() const;
+		const int getRank() const;
+		const std::string getSuitString() const;
+		const std::string getRankString() const;
 };
 #endif //CARD_HPP
