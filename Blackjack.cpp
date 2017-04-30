@@ -155,6 +155,7 @@ void mainGameLoop() {
 				
 				} else if(choice == "s") {
 					//Done dealing
+					handIsOver = true;
 					dealersTurn();
 				}
 				
