@@ -1,4 +1,3 @@
-#include "Blackjack.hpp"
 #include "CardDeck.hpp"
 #include "Card.hpp"
 #include "IO.hpp"
@@ -10,9 +9,15 @@
 #include <algorithm>
 #include <functional>
 
-//Sleep includes
 #include <chrono>
 #include <thread>
+
+// Forward Declarations
+int main();
+void clearScreen();
+void mainGameLoop();
+void dealersTurn();
+void startNewGame();
 
 CardDeck deck(6);
 Player player;
@@ -159,9 +164,16 @@ void mainGameLoop() {
 					dealersTurn();
 				}
 				
-			} else if (playerHandValue == 21) {
+			} else if (playerCards.size() == 2 && playerHandValue == 21) {
 				//Player Wins
 				handIsOver = true;
+				player.setBankroll(player.getBankroll() + (double) 2.5 * bet);
+				printFrameWithText("Blackjack! To play another hand press <ENTER>.", 1);
+				getUserInput();
+			}else if (playerHandValue == 21) {
+				//Player Wins
+				handIsOver = true;
+				player.setBankroll(player.getBankroll() + bet);
 				printFrameWithText("You got 21! To play another hand press <ENTER>.", 1);
 				getUserInput();
 			} else {
