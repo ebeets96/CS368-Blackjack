@@ -14,6 +14,13 @@
 #include <chrono>
 #include <thread>
 
+CardDeck deck(6);
+Player player;
+int bet;
+std::vector<Card> dealerCards;
+std::vector<Card> playerCards;
+std::vector<std::vector<std::string>> dealersCardGraphics;
+std::vector<std::vector<std::string>> playerCardGraphics;
 
 int main() {
 	
@@ -50,35 +57,9 @@ int main() {
 
 		// QUIT
 		case 5:
+			return 0;
 			break;
 	}
-
-/*
-	std::vector<std::vector<std::string>> dealer;
-
-	for (int i = 0; i < 6; i++){
-		Card tempDraw = deck.getCard();
-		dealer.push_back(createCardGraphic(tempDraw, false));
-	}
-
-	printCards(dealer);
-
-
-
-	std::cout << std::endl; 
-	
-	input = getUserInput();
-	verifyNumber(input);
-
-	printMargin();
-	printFrameWithText("What is your name?");
-	printFrame(1);
-	getUserInput();
-	std::cout << "\033[2J\033[1;1H";
-
-	
-	mainGameLoop();
-*/
 }
 
 void clearScreen() {
@@ -89,36 +70,14 @@ void clearScreen() {
 
 }
 
-int convertRank(int rank) {
-
-	if (rank <= 0) {
-		return 11;
-	}
-	
-	else if (rank < 9) {
-		return ++rank;	
-	}
-	
-	else {
-		return 10;	
-	}
-}
-
-void mainGameLoop(Player player) {
+void mainGameLoop() {
 	
 	// INITIALIZES CARDS Using 6 Decks
-	CardDeck deck(6);
 	deck.shuffle();
 
 	bool handIsOver = false;
 
-	std::vector<Card> dealer;
-	std::vector<Card> playerCards;
-	std::vector<std::vector<std::string>> dealersCardGraphics;
-	std::vector<std::vector<std::string>> playerCardGraphics;
-
-	std::string input;	
-	int bet;	
+	std::string input;
 	
 	while (player.getBankroll() > 0) {
 		clearScreen();
@@ -136,7 +95,7 @@ void mainGameLoop(Player player) {
 	
 		// DRAWS CARDS FROM THE DECK TO DEAL
 		for (int i = 0; i < 2; i++) {
-			dealer.push_back(deck.getCard());
+			dealerCards.push_back(deck.getCard());
 			playerCards.push_back(deck.getCard());
 		}
 	
@@ -147,15 +106,18 @@ void mainGameLoop(Player player) {
 
 		while (!handIsOver) {
 			clearScreen();
+			playerCardGraphics.clear();
+			dealersCardGraphics.clear();
+			
 			printFrameWithText("You bet: $" + std::to_string(bet) + " ($" + 
 				std::to_string(player.getBankroll()) +  + " remaining)", 1);
 	
 			// PRINTS DEALERS CARDS
 			printFrameWithTextLeft("Dealers hand:", 0);
 		
-			for (int i = 0; i < dealer.size(); i++) {
-				Card temp = dealer[i];
-				dealersCardGraphics.push_back(createCardGraphic(temp, !(i%2 == 0)));
+			for (int i = 0; i < dealerCards.size(); i++) {
+				Card temp = dealerCards[i];
+				dealersCardGraphics.push_back(createCardGraphic(temp, i != 0));
 			}
 			
 			printCards(dealersCardGraphics);
@@ -169,8 +131,6 @@ void mainGameLoop(Player player) {
 			}
 			
 			playerHandValue = Card::calculateHandValue(playerCards);
-			
-			std::cout << playerHandValue;
 
 			printCards(playerCardGraphics);
 		
@@ -209,13 +169,10 @@ void mainGameLoop(Player player) {
 				printFrameWithText("To play another hand press <ENTER>.", 1);
 				getUserInput();
 			}
-			
-			playerCardGraphics.clear();
-			dealersCardGraphics.clear();
 		}
 		
 		playerCards.clear();
-		dealer.clear();
+		dealerCards.clear();
 		handIsOver = false;
 	}
 	
@@ -224,7 +181,58 @@ void mainGameLoop(Player player) {
 }
 
 void dealersTurn() {
+	bool firstIteration = true;
+	int dealersValue;
+	int playersValue = Card::calculateHandValue(playerCards);
+	do {
+		clearScreen();
+		playerCardGraphics.clear();
+		dealersCardGraphics.clear();
+		
+		if(firstIteration) {
+			firstIteration = false;
+		} else {
+			dealerCards.push_back(deck.getCard());
+		}
 	
+		// PRINTS DEALERS CARDS
+		printFrameWithTextLeft("Dealers hand:", 0);
+	
+		for (Card c : dealerCards) {
+			dealersCardGraphics.push_back(createCardGraphic(c, true));
+		}
+			
+		printCards(dealersCardGraphics);
+
+		// PRINTS PLAYERS CARDS
+		printFrameWithTextLeft("Your hand:", 1);
+
+		for (Card c : playerCards) {
+			playerCardGraphics.push_back(createCardGraphic(c, true));
+		}
+	
+		printCards(playerCardGraphics);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		dealersValue = Card::calculateHandValue(dealerCards);
+	} while(dealersValue < 17);
+	
+	if(dealersValue > 21) {
+		player.setBankroll(player.getBankroll() + 2 * bet);
+		printFrameWithText("The dealer busted, and you won $"
+			+ std::to_string(bet) + ".  To play another hand press <ENTER>.", 1);
+	} else if(playersValue > dealersValue) {
+		player.setBankroll(player.getBankroll() + 2 * bet);
+		printFrameWithText("You beat the dealer and won $"
+			+ std::to_string(bet) + ".  To play another hand press <ENTER>.", 1);
+	} else if (playersValue == dealersValue) {
+		player.setBankroll(player.getBankroll() + bet);
+		printFrameWithText("You tied the dealer, so no money was paid out.  To play another hand press <ENTER>.", 1);
+	} else {
+		printFrameWithText("You lost to the dealer and lost $"
+			+ std::to_string(bet) + ".  To play another hand press <ENTER>.", 1);
+	}
+	
+	getUserInput();
 }
 
 void startNewGame() {
@@ -245,8 +253,8 @@ void startNewGame() {
 	input = getUserInput("          => $");
 	bankroll = verifyNumber(input);
 
-	Player player(name, bankroll);
+	player = Player(name, bankroll);
 	
-	mainGameLoop(player);
+	mainGameLoop();
 }
 

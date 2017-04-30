@@ -9,6 +9,7 @@ class Player {
 		int bankroll;
 
 	public:
+		Player();
 		Player(std::string name, int bankroll);
 		std::string getName();
 		int getBankroll();

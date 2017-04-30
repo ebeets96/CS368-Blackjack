@@ -1,6 +1,10 @@
 #include "Player.hpp"
 #include <string>
 
+Player::Player(){
+
+}
+
 Player::Player(std::string name, int bankroll): name(name), bankroll(bankroll) {
 
 }

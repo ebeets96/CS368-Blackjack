@@ -41,8 +41,6 @@ const int Card::calculateHandValue(std::vector<Card> hand) {
 		}
 	}
 	
-	std::cout << "HandValue: " << handValue << std::endl;
-	
 	// If the hand is <= 11, and there were aces in the
 	// hand.  Convert an ace to have a value of 11 by adding 10.
 	while(handValue <= 11 && numberOfAces > 0) {

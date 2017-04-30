@@ -1,8 +1,5 @@
-#include "Player.hpp"
 int main();
 void clearScreen();
-int convertRank(int rank);
-void mainGameLoop(Player player);
+void mainGameLoop();
 void dealersTurn();
 void startNewGame();
-
