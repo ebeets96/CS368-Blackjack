@@ -1,3 +1,4 @@
+#include "Blackjack.hpp"
 #include "CardDeck.hpp"
 #include "Card.hpp"
 #include "IO.hpp"
@@ -8,6 +9,73 @@
 #include <string>
 #include <algorithm>
 #include <functional>
+
+
+int main() {
+	
+	// USED FOR CLEARING THE CONSOLE
+	std::cout << "\033[2J\033[1;1H";	
+	
+	std::string input;
+	int menuChoice;
+	
+	// PRINTS THE WELCOME MESSAGE / MENU
+	startGame();
+
+	// GETS MAIN MENU OPTION FROM USER
+	input = getUserInput();
+	menuChoice = verifyNumber(input);
+
+	switch (menuChoice) {
+		// NEW GAME			
+		case 1: 
+			startNewGame();
+			break;
+
+		// LOAD GAME
+		case 2:
+			break;
+
+		// STATS
+		case 3:
+			break;
+
+		// HELP
+		case 4:
+			break;
+
+		// QUIT
+		case 5:
+			break;
+	}
+
+/*
+	std::vector<std::vector<std::string>> dealer;
+
+	for (int i = 0; i < 6; i++){
+		Card tempDraw = deck.getCard();
+		dealer.push_back(createCardGraphic(tempDraw, false));
+	}
+
+	printCards(dealer);
+
+
+
+	std::cout << std::endl; 
+	
+	input = getUserInput();
+	verifyNumber(input);
+
+	printMargin();
+	printFrameWithText("What is your name?");
+	printFrame(1);
+	getUserInput();
+	std::cout << "\033[2J\033[1;1H";
+
+	
+	mainGameLoop();
+*/
+}
 
 void clearScreen() {
 
@@ -34,8 +102,8 @@ int convertRank(int rank) {
 
 void mainGameLoop(Player player) {
 	
-	// INITIALIZES CARDS
-	CardDeck deck;
+	// INITIALIZES CARDS Using 6 Decks
+	CardDeck deck(6);
 	deck.shuffle();
 
 	bool handIsOver = false;
@@ -122,6 +190,7 @@ void mainGameLoop(Player player) {
 				
 				} else if(choice == "s") {
 					//Done dealing
+					dealersTurn();
 				}
 				
 			} else if (playerCount == 21) {
@@ -147,6 +216,10 @@ void mainGameLoop(Player player) {
 	
 }
 
+void dealersTurn() {
+	
+}
+
 void startNewGame() {
 	
 	// Player variables
@@ -168,71 +241,5 @@ void startNewGame() {
 	Player player(name, bankroll);
 	
 	mainGameLoop(player);
-}
-
-int main() {
-	
-	// USED FOR CLEARING THE CONSOLE
-	std::cout << "\033[2J\033[1;1H";	
-	
-	std::string input;
-	int menuChoice;
-	
-	// PRINTS THE WELCOME MESSAGE / MENU
-	startGame();
-
-	// GETS MAIN MENU OPTION FROM USER
-	input = getUserInput();
-	menuChoice = verifyNumber(input);
-
-	switch (menuChoice) {
-		// NEW GAME			
-		case 1: 
-			startNewGame();
-			break;
-
-		// LOAD GAME
-		case 2:
-			break;
-
-		// STATS
-		case 3:
-			break;
-
-		// HELP
-		case 4:
-			break;
-
-		// QUIT
-		case 5:
-			break;
-	}
-
-/*
-	std::vector<std::vector<std::string>> dealer;
-
-	for (int i = 0; i < 6; i++){
-		Card tempDraw = deck.getCard();
-		dealer.push_back(createCardGraphic(tempDraw, false));
-	}
-
-	printCards(dealer);
-
-
-
-	std::cout << std::endl; 
-	
-	input = getUserInput();
-	verifyNumber(input);
-
-	printMargin();
-	printFrameWithText("What is your name?");
-	printFrame(1);
-	getUserInput();
-	std::cout << "\033[2J\033[1;1H";
-
-	
-	mainGameLoop();
-*/
 }
 

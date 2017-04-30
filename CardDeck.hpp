@@ -6,6 +6,7 @@ class CardDeck {
 		std::vector<Card> cards;
 	public:
 		CardDeck();
+		CardDeck(const int numberOfDecks);
 		void shuffle();
 		Card getCard();
 };

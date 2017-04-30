@@ -13,6 +13,17 @@ CardDeck::CardDeck() {
 	}
 }
 
+CardDeck::CardDeck(const int numberOfDecks) {
+	for(int i = 0; i < numberOfDecks; ++i) {
+		for(int rank = Card::ACE; rank <= Card::KING; ++rank) {
+			for(int suit = 0; suit <= 3; ++suit) {
+				Card temp(suit, rank);
+				cards.push_back(temp);
+			}
+		}
+	}
+}
+
 void CardDeck::shuffle() {
 	std::random_device rd;
     std::mt19937 g(rd());

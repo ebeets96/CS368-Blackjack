@@ -163,25 +163,31 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 	
 	std::vector<std::string> tempCard;	
 	std::string cardVal;
-	int value = card.getRank() + 1;
+	int value = card.getRank();
 	int suit = card.getSuit();
 	
-	if (value > 0 && value < 10){
+	if (value > Card::ACE && value < Card::JACK){
 		cardVal = std::to_string(value);
 	}
 	else {
-		if (value == 1)
-			cardVal = "A";
-		else if (value == 11)
-			cardVal	= "J";
-		else if (value == 12)
-			cardVal = "Q";
-		else if (value == 13)
-			cardVal = "K";
+		switch(value) {
+			case Card::ACE:
+				cardVal = "A";
+				break;
+			case Card::JACK:
+				cardVal	= "J";
+				break;
+			case Card::QUEEN:
+				cardVal = "Q";
+				break;
+			case Card::KING:
+				cardVal = "K";
+				break;
+		}
 	}
 
-	if (value != 10 && faceUp){
-		if (suit == 3) {
+	if (value != Card::TEN && faceUp){
+		if (suit == Card::HEART) {
 			std::string line1 = "|" + cardVal + "     |";
 			std::string line2 = "|     " + cardVal + "|";
 		
@@ -194,7 +200,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    
 		}
 	
-		else if (suit == 2){
+		else if (suit == Card::DIAMOND){
 			std::string line1 = "|" + cardVal + "     |";
 			std::string line2 = "|     " + cardVal + "|";
 		
@@ -206,7 +212,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    tempCard.push_back("'------'");
 		}
 
-		else if (suit == 0){
+		else if (suit == Card::SPADE){
 			std::string line1 = "|" + cardVal + "     |";
 			std::string line2 = "|  /\\ " + cardVal + "|";
 		
@@ -218,7 +224,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    tempCard.push_back("'------'");
 		}
 
-		else if (suit == 1){
+		else if (suit == Card::CLUB){
 			std::string line1 = "|" + cardVal + "     |";
 			std::string line2 = "|  '' " + cardVal + "|";
 		
@@ -231,8 +237,8 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		}
 	}
 	
-	else if (value == 10 && faceUp) {
-		if (suit == 3) {	
+	else if (value == Card::TEN && faceUp) {
+		if (suit == Card::HEART) {
 		  	tempCard.push_back(" ______ ");
 		    tempCard.push_back("|10    |");
 		    tempCard.push_back("| (\\/) |");
@@ -242,7 +248,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    
 		}
 	
-		else if (suit == 2){
+		else if (suit == Card::DIAMOND){
 		  	tempCard.push_back(" ______ ");
 		    tempCard.push_back("|10    |");
 		    tempCard.push_back("|  /\\  |");
@@ -251,7 +257,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    tempCard.push_back("'------'");
 		}
 
-		else if (suit == 0){
+		else if (suit == Card::SPADE){
 		  	tempCard.push_back(" ______ ");
 		    tempCard.push_back("|10    |");
 		    tempCard.push_back("|  /\\  |");
@@ -260,7 +266,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 		    tempCard.push_back("'------'");
 		}
 
-		else if (suit == 1){
+		else if (suit == Card::CLUB){
 		  	tempCard.push_back(" ______ ");
 		    tempCard.push_back("|10    |");
 		    tempCard.push_back("|  ()  |");

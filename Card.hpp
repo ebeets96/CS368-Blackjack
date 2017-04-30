@@ -22,7 +22,7 @@ class Card {
 		static int const TEN = 10;
 		static int const JACK = 11;
 		static int const QUEEN = 12;
-		static int const KING = 12;
+		static int const KING = 13;
 
 		// Suit Constants
 		static int const HEART = 0;
