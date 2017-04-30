@@ -186,10 +186,12 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 	}
 
 	if (value != Card::TEN && faceUp){
+		std::string line1;
+		std::string line2;
 		switch(suit) {
 			case Card::HEART:
-				std::string line1 = "|" + cardVal + "     |";
-				std::string line2 = "|     " + cardVal + "|";
+				line1 = "|" + cardVal + "     |";
+				line2 = "|     " + cardVal + "|";
 		
 				tempCard.push_back(" ______ ");
 				tempCard.push_back(line1);
@@ -200,8 +202,8 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 				break;
 				
 		    case Card::DIAMOND:
-				std::string line1 = "|" + cardVal + "     |";
-				std::string line2 = "|     " + cardVal + "|";
+				line1 = "|" + cardVal + "     |";
+				line2 = "|     " + cardVal + "|";
 		
 				tempCard.push_back(" ______ ");
 				tempCard.push_back(line1);
@@ -212,8 +214,8 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 				break;
 				
 			case Card::SPADE:
-				std::string line1 = "|" + cardVal + "     |";
-				std::string line2 = "|  /\\ " + cardVal + "|";
+				line1 = "|" + cardVal + "     |";
+				line2 = "|  /\\ " + cardVal + "|";
 		
 				tempCard.push_back(" ______ ");
 				tempCard.push_back(line1);
@@ -224,8 +226,8 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 				break;
 				
 			case Card::CLUB:
-				std::string line1 = "|" + cardVal + "     |";
-				std::string line2 = "|  '' " + cardVal + "|";
+				line1 = "|" + cardVal + "     |";
+				line2 = "|  '' " + cardVal + "|";
 		
 				tempCard.push_back(" ______ ");
 				tempCard.push_back(line1);

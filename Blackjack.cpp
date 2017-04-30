@@ -10,6 +10,10 @@
 #include <algorithm>
 #include <functional>
 
+//Sleep includes
+#include <chrono>
+#include <thread>
+
 
 int main() {
 	
@@ -109,9 +113,9 @@ void mainGameLoop(Player player) {
 	bool handIsOver = false;
 
 	std::vector<Card> dealer;
-	std::vector<Card> myCards;	
+	std::vector<Card> playerCards;
 	std::vector<std::vector<std::string>> dealersCardGraphics;
-	std::vector<std::vector<std::string>> myCardGraphics;
+	std::vector<std::vector<std::string>> playerCardGraphics;
 
 	std::string input;	
 	int bet;	
@@ -133,10 +137,10 @@ void mainGameLoop(Player player) {
 		// DRAWS CARDS FROM THE DECK TO DEAL
 		for (int i = 0; i < 2; i++) {
 			dealer.push_back(deck.getCard());
-			myCards.push_back(deck.getCard());
+			playerCards.push_back(deck.getCard());
 		}
 	
-		int playerCount = 0;
+		int playerHandValue = 0;
 		int dealerCount = 0;
 		bool playerHasAce;
 		bool dealerHasAce;
@@ -159,17 +163,18 @@ void mainGameLoop(Player player) {
 			// PRINTS PLAYERS CARDS
 			printFrameWithTextLeft("Your hand:", 1);
 
-			for (int i = 0; i < myCards.size(); i++) {
-				Card temp = myCards[i];
-				myCardGraphics.push_back(createCardGraphic(temp, true));
-			
-				int tempRank = convertRank(temp.getRank());
-				playerCount += tempRank;
+			for (int i = 0; i < playerCards.size(); i++) {
+				Card temp = playerCards[i];
+				playerCardGraphics.push_back(createCardGraphic(temp, true));
 			}
+			
+			playerHandValue = Card::calculateHandValue(playerCards);
+			
+			std::cout << playerHandValue;
 
-			printCards(myCardGraphics);
+			printCards(playerCardGraphics);
 		
-			if (playerCount < 21){
+			if (playerHandValue < 21){
 				printFrameWithText("Would you like to Hit (H), Double (D), or Stay (S)?", 1);
 				std::string choice = getUserInput();
 				
@@ -178,7 +183,7 @@ void mainGameLoop(Player player) {
 		
 				// CLEARS VECTORS TO PREP FOR HIt		
 				if(choice == "h") {
-						myCards.push_back(deck.getCard());
+						playerCards.push_back(deck.getCard());
 				} else if(choice == "d") {
 					//Check if player has sufficient funds
 					if(player.getBankroll() >= bet) {
@@ -193,8 +198,11 @@ void mainGameLoop(Player player) {
 					dealersTurn();
 				}
 				
-			} else if (playerCount == 21) {
+			} else if (playerHandValue == 21) {
 				//Player Wins
+				handIsOver = true;
+				printFrameWithText("You got 21! To play another hand press <ENTER>.", 1);
+				getUserInput();
 			} else {
 				printBusted();
 				handIsOver = true;
@@ -202,12 +210,11 @@ void mainGameLoop(Player player) {
 				getUserInput();
 			}
 			
-			myCardGraphics.clear();
+			playerCardGraphics.clear();
 			dealersCardGraphics.clear();
-			playerCount = 0;
 		}
 		
-		myCards.clear();
+		playerCards.clear();
 		dealer.clear();
 		handIsOver = false;
 	}

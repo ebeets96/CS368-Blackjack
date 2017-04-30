@@ -34,6 +34,8 @@ class Card {
 		Card(int suit, int rank);
 		const int getSuit() const;
 		const int getRank() const;
+		const int getValue() const;
+		static const int calculateHandValue(std::vector<Card> hand);
 		const std::string getSuitString() const;
 		const std::string getRankString() const;
 };
