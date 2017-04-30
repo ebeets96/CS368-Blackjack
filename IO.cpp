@@ -168,8 +168,7 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 	
 	if (value > Card::ACE && value < Card::JACK){
 		cardVal = std::to_string(value);
-	}
-	else {
+	} else {
 		switch(value) {
 			case Card::ACE:
 				cardVal = "A";
@@ -187,103 +186,100 @@ std::vector<std::string> createCardGraphic(Card card, bool faceUp){
 	}
 
 	if (value != Card::TEN && faceUp){
-		if (suit == Card::HEART) {
-			std::string line1 = "|" + cardVal + "     |";
-			std::string line2 = "|     " + cardVal + "|";
+		switch(suit) {
+			case Card::HEART:
+				std::string line1 = "|" + cardVal + "     |";
+				std::string line2 = "|     " + cardVal + "|";
 		
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back(line1);
-		    tempCard.push_back("| (\\/) |");
-		    tempCard.push_back("|  \\/  |");
-		    tempCard.push_back(line2);
-		    tempCard.push_back("'------'");
-		    
-		}
-	
-		else if (suit == Card::DIAMOND){
-			std::string line1 = "|" + cardVal + "     |";
-			std::string line2 = "|     " + cardVal + "|";
+				tempCard.push_back(" ______ ");
+				tempCard.push_back(line1);
+				tempCard.push_back("| (\\/) |");
+				tempCard.push_back("|  \\/  |");
+				tempCard.push_back(line2);
+				tempCard.push_back("'------'");
+				break;
+				
+		    case Card::DIAMOND:
+				std::string line1 = "|" + cardVal + "     |";
+				std::string line2 = "|     " + cardVal + "|";
 		
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back(line1);
-		    tempCard.push_back("|  /\\  |");
-		    tempCard.push_back("|  \\/  |");
-		    tempCard.push_back(line2);
-		    tempCard.push_back("'------'");
-		}
-
-		else if (suit == Card::SPADE){
-			std::string line1 = "|" + cardVal + "     |";
-			std::string line2 = "|  /\\ " + cardVal + "|";
+				tempCard.push_back(" ______ ");
+				tempCard.push_back(line1);
+				tempCard.push_back("|  /\\  |");
+				tempCard.push_back("|  \\/  |");
+				tempCard.push_back(line2);
+				tempCard.push_back("'------'");
+				break;
+				
+			case Card::SPADE:
+				std::string line1 = "|" + cardVal + "     |";
+				std::string line2 = "|  /\\ " + cardVal + "|";
 		
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back(line1);
-		    tempCard.push_back("|  /\\  |");
-		    tempCard.push_back("| (__) |");
-		    tempCard.push_back(line2);
-		    tempCard.push_back("'------'");
-		}
-
-		else if (suit == Card::CLUB){
-			std::string line1 = "|" + cardVal + "     |";
-			std::string line2 = "|  '' " + cardVal + "|";
+				tempCard.push_back(" ______ ");
+				tempCard.push_back(line1);
+				tempCard.push_back("|  /\\  |");
+				tempCard.push_back("| (__) |");
+				tempCard.push_back(line2);
+				tempCard.push_back("'------'");
+				break;
+				
+			case Card::CLUB:
+				std::string line1 = "|" + cardVal + "     |";
+				std::string line2 = "|  '' " + cardVal + "|";
 		
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back(line1);
-		    tempCard.push_back("|  ()  |");
-		    tempCard.push_back("| (..) |");
-		    tempCard.push_back(line2);
-		    tempCard.push_back("'------'");
+				tempCard.push_back(" ______ ");
+				tempCard.push_back(line1);
+				tempCard.push_back("|  ()  |");
+				tempCard.push_back("| (..) |");
+				tempCard.push_back(line2);
+				tempCard.push_back("'------'");
+				break;
 		}
-	}
-	
-	else if (value == Card::TEN && faceUp) {
-		if (suit == Card::HEART) {
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back("|10    |");
-		    tempCard.push_back("| (\\/) |");
-		    tempCard.push_back("|  \\/  |");
-		    tempCard.push_back("|    10|");
-		    tempCard.push_back("'------'");
-		    
+	} else if (value == Card::TEN && faceUp) {
+		switch(suit) {
+			case Card::HEART:
+				tempCard.push_back(" ______ ");
+				tempCard.push_back("|10    |");
+				tempCard.push_back("| (\\/) |");
+				tempCard.push_back("|  \\/  |");
+				tempCard.push_back("|    10|");
+				tempCard.push_back("'------'");
+				break;
+				
+			case Card::DIAMOND:
+				tempCard.push_back(" ______ ");
+				tempCard.push_back("|10    |");
+				tempCard.push_back("|  /\\  |");
+				tempCard.push_back("|  \\/  |");
+				tempCard.push_back("|    10|");
+				tempCard.push_back("'------'");
+				break;
+			
+			case Card::SPADE:
+				tempCard.push_back(" ______ ");
+				tempCard.push_back("|10    |");
+				tempCard.push_back("|  /\\  |");
+				tempCard.push_back("| (__) |");
+				tempCard.push_back("|  /\\10|");
+				tempCard.push_back("'------'");
+				break;
+			
+			case Card::CLUB:
+				tempCard.push_back(" ______ ");
+				tempCard.push_back("|10    |");
+				tempCard.push_back("|  ()  |");
+				tempCard.push_back("| (..) |");
+				tempCard.push_back("|  ^^10|");
+				tempCard.push_back("'------'");
+				break;
 		}
-	
-		else if (suit == Card::DIAMOND){
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back("|10    |");
-		    tempCard.push_back("|  /\\  |");
-		    tempCard.push_back("|  \\/  |");
-		    tempCard.push_back("|    10|");
-		    tempCard.push_back("'------'");
-		}
-
-		else if (suit == Card::SPADE){
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back("|10    |");
-		    tempCard.push_back("|  /\\  |");
-		    tempCard.push_back("| (__) |");
-		    tempCard.push_back("|  /\\10|");
-		    tempCard.push_back("'------'");
-		}
-
-		else if (suit == Card::CLUB){
-		  	tempCard.push_back(" ______ ");
-		    tempCard.push_back("|10    |");
-		    tempCard.push_back("|  ()  |");
-		    tempCard.push_back("| (..) |");
-		    tempCard.push_back("|  ^^10|");
-		    tempCard.push_back("'------'");
-		}
-	}
-
-	else {
+	} else {
 		tempCard.push_back(" ______ ");
         tempCard.push_back("|$$$$$$|");
         tempCard.push_back("|$$$$$$|");
         tempCard.push_back("|$$$$$$|");
         tempCard.push_back("|$$$$$$|");
         tempCard.push_back("'------'");
-
 	}
 
 	return tempCard;
